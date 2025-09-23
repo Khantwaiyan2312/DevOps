@@ -8,8 +8,12 @@ import org.bson.Document;
 
 public class App {
     public static void main(String[] args) {
-        // Connect to MongoDB on localhost, port 27000
-        try (MongoClient mongoClient = MongoClients.create("mongodb://localhost:27000")) {
+        // Change hostname/port depending on environment:
+        // - "localhost:27000" for local dev
+        // - "mongo-dbserver:27017" for Docker Compose or containerized setup
+        String mongoUri = "mongodb://mongo-dbserver:27017";
+
+        try (MongoClient mongoClient = MongoClients.create(mongoUri)) {
             // Get a database - will be created if it doesn't exist
             MongoDatabase database = mongoClient.getDatabase("mydb");
 
@@ -28,7 +32,7 @@ public class App {
             // Check document in collection
             Document myDoc = collection.find().first();
             if (myDoc != null) {
-                System.out.println(myDoc.toJson());
+                System.out.println("Inserted document: " + myDoc.toJson());
             } else {
                 System.out.println("No document found!");
             }
