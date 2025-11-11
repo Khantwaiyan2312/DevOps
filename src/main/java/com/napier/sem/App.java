@@ -98,7 +98,6 @@ public class App {
     }
 
 
-
     /**
      * Retrieves all employees and their current salaries for a given department.
      * @param dept The Department object containing dept_no and manager.
