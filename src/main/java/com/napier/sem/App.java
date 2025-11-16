@@ -63,24 +63,35 @@ public class App {
         }
     }
 
-    public Employee getEmployee(int ID) {
+    public Employee getEmployee(int id) {
         try {
-            // Create an SQL statement
-            Statement stmt = con.createStatement();
-            // Create string for SQL statement
-            String strSelect = "SELECT emp_no, first_name, last_name FROM employees WHERE emp_no = " + ID;
-            // Execute SQL statement
-            ResultSet rset = stmt.executeQuery(strSelect);
-            // Return new employee if valid.
-            // Check one is returned
+            if (con == null) {
+                System.out.println("No connection to database.");
+                return null;
+            }
+
+            String sql =
+                    "SELECT e.emp_no, e.first_name, e.last_name, s.salary " +
+                            "FROM employees e " +
+                            "JOIN salaries s ON e.emp_no = s.emp_no " +
+                            "WHERE e.emp_no = ? " +
+                            "AND s.to_date = '9999-01-01'";
+
+            PreparedStatement pstmt = con.prepareStatement(sql);
+            pstmt.setInt(1, id);
+            ResultSet rset = pstmt.executeQuery();
+
             if (rset.next()) {
                 Employee emp = new Employee();
                 emp.emp_no = rset.getInt("emp_no");
                 emp.first_name = rset.getString("first_name");
                 emp.last_name = rset.getString("last_name");
+                emp.salary = rset.getInt("salary");
                 return emp;
-            } else
+            } else {
+                System.out.println("Employee not found: " + id);
                 return null;
+            }
         } catch (Exception e) {
             System.out.println(e.getMessage());
             System.out.println("Failed to get employee details");
