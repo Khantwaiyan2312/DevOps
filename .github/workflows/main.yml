@@ -166,9 +166,10 @@ jobs:
       - name: CodeCov
         uses: codecov/codecov-action@v5
         with:
-          directory: ./target/site/jacoco
-          flags: Integration Tests
-          verbose: true
+          token: ${{ secrets.CODECOV_TOKEN }} # not required for public repos
+          files: target/site/jacoco/jacoco.xml
+          flags: Unit Tests # optional
+          verbose: true # optional (default = false)
       - name: Deploy Release to GitHub
         uses: marvinpinto/action-automatic-releases@latest
         with:
@@ -177,3 +178,5 @@ jobs:
           automatic_release_tag: "latest"
           files: |
             ./target/seMethods.jar
+            
+            
