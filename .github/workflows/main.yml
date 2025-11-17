@@ -95,7 +95,7 @@
 ##        with:
 ##          branch: reports # The branch the action should deploy to.
 ##          folder: reports # The folder we are copying
-name: A workflow for my Hello World App
+name: A workflow for my Hello World
 
 on:
   push:
